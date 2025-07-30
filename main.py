@@ -4,9 +4,12 @@ from pydub import AudioSegment
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 import pyperclip
+import time
+
 
 AudioSegment.converter = r"C:\ffmpeg\bin\ffmpeg.exe"
 AudioSegment.ffprobe = r"C:\ffmpeg\bin\ffprobe.exe"
+inicio_tempo = time.time()
 
 Tk().withdraw()
 caminho_ogg = askopenfilename(title="Selecione um arquivo .ogg", filetypes=[("OGG files", "*.ogg")])
@@ -18,7 +21,7 @@ r = sr.Recognizer()
 
 transcricoes = []
 
-for velocidade in [round(v, 2) for v in [0.87 + 0.01 * i for i in range(9)]]:
+for velocidade in [round(v, 2) for v in [0.88 + 0.008 * i for i in range(9)]]:  
 
     audio_original = AudioSegment.from_file(caminho_ogg, format="ogg")
     audio = audio_original._spawn(audio_original.raw_data, overrides={
@@ -50,7 +53,15 @@ for velocidade in [round(v, 2) for v in [0.87 + 0.01 * i for i in range(9)]]:
     transcricao_geral = f"[Velocidade {velocidade}]\n" + "\n".join(texto_velocidade)
     transcricoes.append(transcricao_geral)
 
-resultado_final = "\n\n".join(transcricoes)
+prompt = "Your prompt"
+
+resultado_final = prompt + "\n\n" + "\n\n".join(transcricoes)
+
 print("Todas as transcrições:")
 print(resultado_final)
 pyperclip.copy(resultado_final)
+fim_tempo = time.time()
+duracao = fim_tempo - inicio_tempo
+minutos = int(duracao // 60)
+segundos = int(duracao % 60)
+print(f"\nTempo total: {minutos} m {segundos} s")
