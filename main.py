@@ -14,12 +14,11 @@ if not caminho_ogg:
     print("Nenhum arquivo selecionado.")
     exit()
 
-# Reconhecedor
 r = sr.Recognizer()
 
 transcricoes = []
 
-for velocidade in [round(v, 2) for v in [0.87 + 0.01 * i for i in range(9)]]:  # 0.87 a 0.95
+for velocidade in [round(v, 2) for v in [0.87 + 0.01 * i for i in range(9)]]:
 
     audio_original = AudioSegment.from_file(caminho_ogg, format="ogg")
     audio = audio_original._spawn(audio_original.raw_data, overrides={
@@ -27,7 +26,7 @@ for velocidade in [round(v, 2) for v in [0.87 + 0.01 * i for i in range(9)]]:  #
     }).set_frame_rate(audio_original.frame_rate)
 
     duracao_ms = len(audio)
-    segmento_ms = 30 * 1000  # 30 segundos
+    segmento_ms = 30 * 1000  
     texto_velocidade = []
 
     for i in range(0, duracao_ms, segmento_ms):
@@ -51,7 +50,6 @@ for velocidade in [round(v, 2) for v in [0.87 + 0.01 * i for i in range(9)]]:  #
     transcricao_geral = f"[Velocidade {velocidade}]\n" + "\n".join(texto_velocidade)
     transcricoes.append(transcricao_geral)
 
-# Exibe e copia tudo
 resultado_final = "\n\n".join(transcricoes)
 print("Todas as transcrições:")
 print(resultado_final)
