@@ -21,7 +21,7 @@ r = sr.Recognizer()
 
 transcricoes = []
 
-for velocidade in [round(v, 2) for v in [0.88 + 0.008 * i for i in range(9)]]:  
+for velocidade in [round(v, 2) for v in [0.885 + 0.015 * i for i in range(4)]]:
 
     audio_original = AudioSegment.from_file(caminho_ogg, format="ogg")
     audio = audio_original._spawn(audio_original.raw_data, overrides={
@@ -29,7 +29,7 @@ for velocidade in [round(v, 2) for v in [0.88 + 0.008 * i for i in range(9)]]:
     }).set_frame_rate(audio_original.frame_rate)
 
     duracao_ms = len(audio)
-    segmento_ms = 30 * 1000  
+    segmento_ms = 30 * 1000
     texto_velocidade = []
 
     for i in range(0, duracao_ms, segmento_ms):
@@ -53,7 +53,7 @@ for velocidade in [round(v, 2) for v in [0.88 + 0.008 * i for i in range(9)]]:
     transcricao_geral = f"[Velocidade {velocidade}]\n" + "\n".join(texto_velocidade)
     transcricoes.append(transcricao_geral)
 
-prompt = "Your prompt"
+prompt = "Your prompt here"
 
 resultado_final = prompt + "\n\n" + "\n\n".join(transcricoes)
 
